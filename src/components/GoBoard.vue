@@ -1,13 +1,16 @@
 <template>
     <div class="board">
         <div class="row" v-for="(line, y) in boardData" :key="y">
-            <div class="cell" :class="{hoshi: isHoshi(x, y)}" v-for="(cell, x) in line" :key="x" @click="placeMove(x, y)">
+            <div class="cell" v-for="(cell, x) in line" :key="x" @click="placeMove(x, y)">
+                <div class="line horizontal" /><div class="line vertical" />
+                <div v-if="isHoshi(x, y)" class="hoshi" />
+
                 <div v-if="cell" class="stone blackStone" />
                 <div v-else-if="cell === false" class="stone whiteStone" />
             </div>
         </div>
-        <stats-block :blacksMove="moveForBlack" :moveNr="moveNr" :prisoners="prisoners" />
     </div>
+    <stats-block :blacksMove="moveForBlack" :moveNr="moveNr" :prisoners="prisoners" />
 </template>
 
 <script>
@@ -98,23 +101,46 @@
         width: 40rem;
         height: 40rem;
         margin: 1rem auto;
+        border: 3px solid black;
     }
     .row {
-        width: 100%;
-        height: calc(5.3% - 3px);
+        width: calc(100% - 0px);
+        height: calc(5.263157894% - 0px);
     }
 
     .cell {
         height: 100%;
-        width: calc(5.3% - 3px);
+        width: calc(5.263157894% - 0px);
         float: left;
-        border: 1px solid black;
         background-color: #EECC44;
         position: relative;
     }
-    .cell.hoshi {
-        background-color: #CCAA22;
+
+    .cell .line {
+        position: absolute;
+        background-color: black;
     }
+    .cell .line.horizontal {
+        width: 100%;
+        height: 1px;
+        top: 50%;
+    }
+    .cell .line.vertical {
+        width: 1px;
+        height: 100%;
+        left: 50%;
+    }
+    .cell .hoshi {
+        width: 20%;
+        height: 20%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #000000;
+        border-radius: 50%;
+    }
+
 
     .stone {
         width: calc(100% - 2px);

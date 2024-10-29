@@ -30,7 +30,8 @@ export default {
     }
 
     .root {
-        width: calc(100% - 15px);
+        width: 40rem;
+        margin: 0 auto;
     }
 
     .subsection {
