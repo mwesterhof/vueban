@@ -4,6 +4,6 @@
 
 <style>
     body {
-        background-color: #999999;
+        background-color: #555555;
     }
 </style>

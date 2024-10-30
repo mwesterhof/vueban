@@ -1,4 +1,11 @@
 <template>
+    <stats-block
+        :blacksMove="moveForBlack"
+        :moveNr="moveNr"
+        :prisoners="prisoners"
+        @doReset="reset"
+        @doPass="pass"
+    />
     <div class="board">
         <div class="row" v-for="(line, y) in boardData" :key="y">
             <div class="cell" v-for="(cell, x) in line" :key="x" @click="placeMove(x, y)">
@@ -10,7 +17,6 @@
             </div>
         </div>
     </div>
-    <stats-block :blacksMove="moveForBlack" :moveNr="moveNr" :prisoners="prisoners" />
 </template>
 
 <script>
@@ -42,6 +48,16 @@
                 }
                 this.moveForBlack = !this.moveForBlack
                 this.moveNr++
+            },
+            pass() {
+                this.moveForBlack = !this.moveForBlack
+            },
+            reset() {
+                this.moveNr = 0
+                this.boardData = createEmptyBoard(this.$props.size)
+                this.prisoners.black = 0
+                this.prisoners.white = 0
+                this.moveForBlack = true
             },
             isHoshi(x, y) {
                 if (x == 3 && y == 3) {
@@ -86,14 +102,18 @@
 
     @keyframes placeStone {
         0% {
-            transform: translate(-5px, -20px);
+            transform: translate(-30%, -80%);
             filter: drop-shadow(4px 4px 10px #664400);
             opacity: 0;
+            width: 120%;
+            height: 120;
         }
         100% {
             transform: translate(0, 0);
             filter: drop-shadow(1px 2px 4px #442200);
             opacity: 1;
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
         }
     }
 
@@ -101,7 +121,7 @@
         width: 40rem;
         height: 40rem;
         margin: 1rem auto;
-        border: 3px solid black;
+        border: 5px solid #000000;
     }
     .row {
         width: calc(100% - 0px);
@@ -141,7 +161,6 @@
         border-radius: 50%;
     }
 
-
     .stone {
         width: calc(100% - 2px);
         height: calc(100% - 2px);
@@ -152,13 +171,14 @@
         filter: drop-shadow(1px 2px 4px #442200);
         z-index: 1000;
         animation-name: placeStone;
-        animation-duration: .5s;
+        animation-duration: .3s;
     }
-
     .blackStone {
         background-color: black;
+        background-image: radial-gradient(circle at 30% 30%, #666666 0, #000000 40%);
     }
     .whiteStone {
         background-color: white;
+        background-image: radial-gradient(circle at 30% 30%, #FFFFFF 0, #CCCCCC 30%);
     }
 </style>
